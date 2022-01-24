@@ -1,4 +1,4 @@
-# thangved-draw-graph
+# graph-board
 
 Một Thư Viện Vẽ Đồ Thị Bằng Javascript.
 > A Draw Graph Javascript Library.
@@ -18,7 +18,7 @@ Một Thư Viện Vẽ Đồ Thị Bằng Javascript.
 ```
 
 ```js
-import Graph from 'thangved-draw-graph'
+import Graph from 'graph-board'
 
 // Khởi tạo đối tượng Graph
 const graph = new Graph()
