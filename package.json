@@ -1,5 +1,5 @@
 {
-  "name": "thangved-draw-graph",
+  "name": "draw-graph",
   "version": "1.0.0",
   "description": "Một thư viện vẽ đồ thị bằng Javascript",
   "main": "./index.js",
