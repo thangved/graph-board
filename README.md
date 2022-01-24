@@ -3,6 +3,8 @@
 Một Thư Viện Vẽ Đồ Thị Bằng Javascript.
 > A Draw Graph Javascript Library.
 
+[Xem demo](https://thangved.github.io/draw-graph)
+
 ## Cách dùng cơ bản
 
 > Basic Usage

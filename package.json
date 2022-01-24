@@ -1,9 +1,13 @@
 {
   "name": "graph-board",
   "version": "1.0.2",
+  "author": {
+    "url": "https://github.com/thangved",
+    "name": "Minh Thắng @thangved"
+  },
   "description": "Một thư viện vẽ đồ thị bằng Javascript",
   "main": "./index.js",
-  "homepage": "https://github.com/thangved/thangved-draw-graph#readme",
+  "homepage": "https://github.com/thangved/graph-board#readme",
   "license": "MIT",
   "devDependencies": {
     "webpack": "^5.66.0",
@@ -18,6 +22,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "git + https://github.com/thangved/thangved-draw-graph.git"
+    "url": "git + https://github.com/thangved/graph-board.git"
   }
 }
