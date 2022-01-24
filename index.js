@@ -1,1 +1,3 @@
-export default require('./src/Graph')
+import Graph from './src/Graph';
+
+export default Graph;
