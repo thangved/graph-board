@@ -1,6 +1,6 @@
 {
   "name": "draw-graph",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Một thư viện vẽ đồ thị bằng Javascript",
   "main": "./index.js",
   "homepage": "https://github.com/thangved/thangved-draw-graph",
