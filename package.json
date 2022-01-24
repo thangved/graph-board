@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Một thư viện vẽ đồ thị bằng Javascript",
   "main": "./index.js",
-  "homepage": "https://github.com/thangved/thangved-draw-graph",
+  "homepage": "https://github.com/thangved/graph-board",
   "license": "MIT",
   "devDependencies": {
     "webpack": "^5.66.0",
@@ -17,6 +17,6 @@
     "path": "^0.12.7"
   },
   "repository": {
-    "url": "https://github.com/thangved/thangved-draw-graph"
+    "url": "https://github.com/thangved/graph-board"
   }
 }
