@@ -23,8 +23,5 @@
   "repository": {
     "type": "git",
     "url": "git + https://github.com/thangved/graph-board.git"
-  },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
   }
 }
