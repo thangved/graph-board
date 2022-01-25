@@ -1,5 +1,5 @@
 import Board from "./Board";
-import Stack from "./Stack";
+import Stack from "thangved-stack";
 
 class Graph {
 	constructor({ directed, showDistance, showGrid, radius } = {}) {
