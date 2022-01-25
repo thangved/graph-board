@@ -2,8 +2,8 @@ import Board from './Board'
 import Stack from './Stack';
 
 class Graph {
-    constructor({ directed, showDistance, showGrid } = {}) {
-        this.board = new Board();
+    constructor({ directed, showDistance, showGrid, radius } = {}) {
+        this.board = new Board({ radius });
         this.nodes = []
         this.edges = []
         this.functions = []
@@ -252,6 +252,10 @@ class Graph {
     }
     setShowDistance(showDistance) {
         this.showDistance = showDistance
+    }
+
+    setRadius(radius) {
+        this.board.radius = radius
     }
 
 }

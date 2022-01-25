@@ -1,5 +1,5 @@
 class Board {
-    constructor(width, height, radius, fontSize) {
+    constructor({ width, height, radius, fontSize }) {
         this.canvas = document.createElement('canvas')
         this.context = this.canvas.getContext('2d')
         this.radius = radius || 20
