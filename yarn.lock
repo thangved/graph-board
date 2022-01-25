@@ -699,6 +699,11 @@ source-map@~0.7.2:
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.7.3.tgz#5302f8169031735226544092e64981f751750383"
   integrity sha512-CkCj6giN3S+n9qrYiBTX5gystlENnRW5jZeNLHpe6aue+SrHcG5VYwujhW9s4dY31mEGsxBDrHR6oI69fTXsaQ==
 
+stack-structure@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/stack-structure/-/stack-structure-1.0.2.tgz#c7097a3a5f4bbfdbd23f149fe91f37f2f7d9a776"
+  integrity sha512-JFPT7yv1xOEJvCU2rSb1FOKcj8PaZ1AGdY/nn8cR8TD7S+1BrjAlLNKOp70g/eFPlp2TjqWI9cR+Im200fCUtQ==
+
 strip-final-newline@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/strip-final-newline/-/strip-final-newline-2.0.0.tgz#89b852fb2fcbe936f6f4b3187afb0a12c1ab58ad"
@@ -740,11 +745,6 @@ terser@^5.7.2:
     commander "^2.20.0"
     source-map "~0.7.2"
     source-map-support "~0.5.20"
-
-thangved-stack@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/thangved-stack/-/thangved-stack-1.0.4.tgz#025a74ef4b68b94a582da1fd4f5e683f1b377d8b"
-  integrity sha512-Wp82jOqWcpFqFurdhGcdKQKQ2FROhZoRD7yDsh8DLdorXITBz9ogn7PRSrYTMNbyDYMKYj9uwh4m+LWMvvjFWQ==
 
 uri-js@^4.2.2:
   version "4.4.1"

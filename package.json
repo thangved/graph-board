@@ -21,9 +21,12 @@
 	},
 	"dependencies": {
 		"path": "^0.12.7",
-		"thangved-stack": "^1.0.4"
+		"stack-structure": "^1.0.2"
 	},
-	"repository": "git://github.com/thangved/thangved-stack.git",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/thangved/graph-board.git"
+	},
 	"keywords": [
 		"graph theory",
 		"canvas"
