@@ -21,7 +21,7 @@
 	},
 	"dependencies": {
 		"path": "^0.12.7",
-		"thangved-stack": "^1.0.0"
+		"thangved-stack": "^1.0.2"
 	},
 	"repository": {
 		"type": "git",
