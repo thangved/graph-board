@@ -1,5 +1,7 @@
 # graph-board
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/169db8d768b14550ac1cdf5edbcd2999)](https://app.codacy.com/gh/thangved/graph-board?utm_source=github.com&utm_medium=referral&utm_content=thangved/graph-board&utm_campaign=Badge_Grade_Settings)
+
 Một Thư Viện Vẽ Đồ Thị Bằng Javascript.
 > A Draw Graph Javascript Library.
 
