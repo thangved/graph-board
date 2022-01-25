@@ -741,10 +741,10 @@ terser@^5.7.2:
     source-map "~0.7.2"
     source-map-support "~0.5.20"
 
-thangved-stack@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/thangved-stack/-/thangved-stack-1.0.2.tgz#21d0f5d17897d6e2c8c0a599ff9b4bd5ac00c769"
-  integrity sha512-lFJG5F6TbrrvQGRuxpFGi9tpj8Zjm/mRnN/IzfyVQPopejwvbZ0tWUDqCa7Dta8E72nKUJjAnlXrR/8pEp7svg==
+thangved-stack@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/thangved-stack/-/thangved-stack-1.0.4.tgz#025a74ef4b68b94a582da1fd4f5e683f1b377d8b"
+  integrity sha512-Wp82jOqWcpFqFurdhGcdKQKQ2FROhZoRD7yDsh8DLdorXITBz9ogn7PRSrYTMNbyDYMKYj9uwh4m+LWMvvjFWQ==
 
 uri-js@^4.2.2:
   version "4.4.1"
