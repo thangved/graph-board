@@ -22,7 +22,9 @@
 
 	<body>
 		<script>
-			const g = new Graph();
+			const g = new Graph({
+				directed: true,
+			});
 			g.board.appendTo("body");
 			g.addNode(1);
 			g.addNode(2);
