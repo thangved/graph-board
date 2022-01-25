@@ -1,2 +1,2 @@
-import Graph from './Graph'
-window.Graph = Graph
+import Graph from "./Graph";
+window.Graph = Graph;

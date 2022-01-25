@@ -1,34 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Test</title>
+		<script src="../main.bundle.js"></script>
+		<style>
+			* {
+				box-sizing: border-box;
+				padding: 0;
+				margin: 0;
+			}
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test</title>
-    <script src="../main.bundle.js"></script>
-    <style>
-        * {
-            box-sizing: border-box;
-            padding: 0;
-            margin: 0;
-        }
+			body {
+				width: 100%;
+				height: 100vh;
+			}
+		</style>
+	</head>
 
-        body {
-            width: 100%;
-            height: 100vh;
-        }
-    </style>
-</head>
-
-<body>
-    <script>
-        const g = new Graph()
-        g.board.appendTo('body')
-        g.addNode(1)
-        g.addNode(2)
-        g.addEdge(1, 2)
-    </script>
-</body>
-
+	<body>
+		<script>
+			const g = new Graph();
+			g.board.appendTo("body");
+			g.addNode(1);
+			g.addNode(2);
+			g.addEdge(1, 2);
+		</script>
+	</body>
 </html>
