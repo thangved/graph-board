@@ -23,10 +23,7 @@
 		"path": "^0.12.7",
 		"thangved-stack": "^1.0.4"
 	},
-	"repository": {
-		"type": "git",
-		"url": "git + https://github.com/thangved/graph-board.git"
-	},
+	"repository": "git://github.com/thangved/thangved-stack.git",
 	"keywords": [
 		"graph theory",
 		"canvas"
