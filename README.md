@@ -81,7 +81,7 @@ graph.appendTo('#graph')
 | addNode(label:number)                | `label`: nhãn của nút                                       | Thêm một nút vào đồ thị                                    |
 | addEdge(from:number, to:number)      | `from`: đỉnh bắt đầu của cung, `to`: đỉnh kết thúc của cung | Thêm một cung vào đồ thị                                   |
 | appendTo(selector: string)           | `selector`: css-selector                                    | Chèn giao diện đồ họa của đồ thị vào một đối tượng DOM     |
-| setRedirected(directed: boolean)     | `directed`: boolean                                         | Đặt giá trị cho việc hiện hay ẩn hướng của đồ thị          |
+| setDirected(directed: boolean)       | `directed`: boolean                                         | Đặt giá trị cho việc hiện hay ẩn hướng của đồ thị          |
 | setShowDistance(distance: boolean)   | `distance`: boolean                                         | Đặt giá trị cho việc hiện hay ẩn khoảng cách giữa các đỉnh |
 | setShowGrid(showGrid: boolean)       | `showGrid`: boolean                                         | Đặt giá trị cho việc hiện hay ẩn lưới                      |
 | exportMatrix(): number[][]           | Không có tham số                                            | Trả về ma trận kề của đồ thị                               |

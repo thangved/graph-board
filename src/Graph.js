@@ -2,7 +2,8 @@ import Board from "./Board";
 import Stack from "stack-structure";
 
 class Graph {
-	constructor({ directed, showDistance, showGrid, radius } = {}) {
+	constructor({ directed, showDistance, showGrid, radius, character } = {}) {
+		this.alphabet = "_ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		this.board = new Board({ radius });
 		this.nodes = [];
 		this.edges = [];
@@ -11,12 +12,13 @@ class Graph {
 		this.directed = directed;
 		this.showDistance = showDistance;
 		this.showGrid = showGrid;
+		this.character = character;
 
 		this.init();
 	}
 
 	init() {
-		this.board.canvas.ondblclick = (event) => {
+		this.board.canvas.ondblclick = () => {
 			if (this.target) return;
 			this.addNode(
 				this.nodes.length + 1,
@@ -25,7 +27,7 @@ class Graph {
 			);
 		};
 
-		this.board.canvas.addEventListener("mousemove", (event) => {
+		this.board.canvas.addEventListener("mousemove", () => {
 			const { x, y } = this.board.clientPosition;
 			document.body.style.cursor = "unset";
 
@@ -95,7 +97,7 @@ class Graph {
 			this.board.drawNode(
 				node.x,
 				node.y,
-				node.label,
+				this.character ? this.alphabet[node.label] : node.label,
 				this.target?.label === node.label
 			);
 		});
@@ -103,18 +105,18 @@ class Graph {
 	updateNodes() {
 		this.nodes = this.nodes.map((e) => {
 			if (!this.board.buttons || this.board.shift || !this.target)
-				return this.exchange(e);
+				return this.magicFunction(e);
 
 			if (this.target.label === e.label) {
 				this.target = this.toClientPosition(e);
 				return this.toClientPosition(e);
 			}
 
-			return this.exchange(e);
+			return this.magicFunction(e);
 		});
 	}
 
-	exchange(e) {
+	magicFunction(e) {
 		if (e.move >= 0)
 			return {
 				...e,
@@ -258,6 +260,20 @@ class Graph {
 
 	setRadius(radius) {
 		this.board.radius = radius;
+	}
+
+	getNodes() {
+		return this.nodes.map((node) => ({
+			...this.edges,
+			label: this.character ? this.alphabet[node.label] : node.label,
+		}));
+	}
+	getEdges() {
+		return this.edges.map((edge) => ({
+			...edge,
+			from: this.character ? this.alphabet[edge.from] : edge.from,
+			to: this.character ? this.alphabet[edge.to] : edge.label,
+		}));
 	}
 }
 
