@@ -1,3 +1,5 @@
+import Position from "./Position";
+
 class Board {
 	constructor({ width, height, radius, fontSize }) {
 		this.canvas = document.createElement("canvas");
@@ -5,9 +7,11 @@ class Board {
 		this.radius = radius || 20;
 		this.fontSize = fontSize || 25;
 		this.clientPosition = { x: 0, y: 0 };
+		this.prevPosition = { x: 0, y: 0 };
 		this.buttons = 0;
 		this.shift = false;
 		this.selector = "";
+		this.position = new Position(0, 0);
 
 		this.canvas.width = width || 300;
 		this.canvas.height = height || 400;
@@ -17,6 +21,7 @@ class Board {
 
 	init() {
 		this.canvas.onmousemove = (event) => {
+			this.prevPosition = { ...this.clientPosition };
 			this.clientPosition = {
 				x: event.clientX - this.canvas.offsetLeft + window.scrollX,
 				y: event.clientY - this.canvas.offsetTop + window.scrollY,
@@ -24,7 +29,7 @@ class Board {
 			this.buttons = event.buttons;
 			this.shift = event.shiftKey;
 		};
-		window.onresize = (event) => {
+		window.onresize = () => {
 			if (this.selector) this.appendTo(this.selector);
 		};
 	}
@@ -62,19 +67,17 @@ class Board {
 		this.context.stroke();
 		this.context.lineWidth = 1;
 	}
-	drawDirected(x1, y1, x2, y2) {
-		const angle = Math.atan2(y1 - y2, x1 - x2);
-
+	drawDirected(x1, y1, x2, y2, distance) {
+		const curvePos = this.getCurvePos(x1, y1, x2, y2, distance);
+		const angle = Math.atan2(curvePos.y - y2, curvePos.x - x2);
 		const A = {
 			x: x2 + this.radius * Math.cos(angle),
 			y: y2 + this.radius * Math.sin(angle),
 		};
-
 		const M = {
 			x: A.x + (this.radius * Math.cos(angle) * Math.pow(3, 1 / 2)) / 2,
 			y: A.y + (this.radius * Math.sin(angle) * Math.pow(3, 1 / 2)) / 2,
 		};
-
 		const B = {
 			x: M.x + (this.radius / 2) * Math.cos(angle - Math.PI / 2),
 			y: M.y + (this.radius / 2) * Math.sin(angle - Math.PI / 2),
@@ -97,17 +100,13 @@ class Board {
 		this.context.lineWidth = 1;
 	}
 
-	drawDistance(x1, y1, x2, y2) {
-		const middle = {
-			x: (x1 + x2) / 2,
-			y: (y1 + y2) / 2,
-		};
-
-		const distance = Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
+	drawDistance(x1, y1, x2, y2, distance) {
+		const d = this.getDistance(new Position(x1, y1), new Position(x2, y2));
+		const curvePos = this.getCurvePos(x1, y1, x2, y2, distance);
 
 		this.context.fillStyle = "#000";
 		this.context.beginPath();
-		this.context.fillText(parseInt(distance / 100), middle.x, middle.y);
+		this.context.fillText(parseInt(d / 100), curvePos.x, curvePos.y);
 		this.context.textAlign = "center";
 		this.context.fillStyle = "#fff";
 	}
@@ -133,6 +132,24 @@ class Board {
 			this.drawHorizontal(i);
 		for (let i = 0; i <= this.canvas.width; i += this.radius * 2)
 			this.drawVertical(i);
+	}
+	drawCurve(x1, y1, x2, y2, distance) {
+		this.context.moveTo(x1, y1);
+		const curvePos = this.getCurvePos(x1, y1, x2, y2, distance);
+
+		this.context.quadraticCurveTo(curvePos.x, curvePos.y, x2, y2);
+		this.context.stroke();
+	}
+
+	getMiddle(x1, y1, x2, y2) {
+		return this.position.getMiddle(x1, y1, x2, y2);
+	}
+
+	getCurvePos(x1, y1, x2, y2, distance) {
+		return this.position.getCurvePos(x1, y1, x2, y2, distance);
+	}
+	getDistance(pos1, pos2) {
+		return this.position.getDistance(pos1, pos2);
 	}
 	clear() {
 		this.context.fillStyle = "#f4f8ff";

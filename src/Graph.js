@@ -9,6 +9,7 @@ class Graph {
 		this.edges = [];
 		this.functions = [];
 		this.target = null;
+		this.selectedEdgeId = null;
 		this.directed = directed;
 		this.showDistance = showDistance;
 		this.showGrid = showGrid;
@@ -30,6 +31,26 @@ class Graph {
 		this.board.canvas.addEventListener("mousemove", () => {
 			const { x, y } = this.board.clientPosition;
 			document.body.style.cursor = "unset";
+
+			this.edges.map((edge, index) => {
+				if (this.board.buttons === 1) return;
+				const from = this.nodes[edge.from - 1];
+				const to = this.nodes[edge.to - 1];
+
+				if (!from || !to) return;
+
+				const curvePos = this.board.getCurvePos(
+					from.x,
+					from.y,
+					to.x,
+					to.y,
+					edge.curve
+				);
+				const distance = this.board.getDistance(curvePos, { x, y });
+
+				if (distance < this.board.radius) this.selectedEdgeId = index;
+				if (this.target) this.selectedEdgeId = null;
+			});
 
 			this.nodes.forEach((e) => {
 				if (this.equalPoint(x, e.x) && this.equalPoint(y, e.y))
@@ -54,10 +75,18 @@ class Graph {
 	update() {
 		this.draw();
 		this.checkAddEdge();
+		this.updateCurve();
 		this.updateNodes();
 		setTimeout(() => {
 			this.update();
 		}, 1000 / 60);
+	}
+
+	updateCurve() {
+		if (this.board.buttons !== 1 || this.selectedEdgeId === null) return;
+		if (this.target) return;
+		this.edges[this.selectedEdgeId].curve +=
+			this.board.clientPosition.x - this.board.prevPosition.x;
 	}
 
 	addNode(label, x, y) {
@@ -71,7 +100,7 @@ class Graph {
 	}
 
 	addEdge(from, to) {
-		const edge = { from, to };
+		const edge = { from, to, curve: Math.random() * 100 };
 		this.edges.push(edge);
 		this.target = null;
 	}
@@ -180,13 +209,32 @@ class Graph {
 		});
 		if (!posFrom || !posTo) return this.removeEdge(edge);
 
-		this.board.drawLine(posFrom.x, posFrom.y, posTo.x, posTo.y);
+		this.board.drawCurve(
+			posFrom.x,
+			posFrom.y,
+			posTo.x,
+			posTo.y,
+			edge.curve
+		);
+		// this.board.drawLine(posFrom.x, posFrom.y, posTo.x, posTo.y);
 
 		if (this.directed)
-			this.board.drawDirected(posFrom.x, posFrom.y, posTo.x, posTo.y);
+			this.board.drawDirected(
+				posFrom.x,
+				posFrom.y,
+				posTo.x,
+				posTo.y,
+				edge.curve
+			);
 
 		if (this.showDistance)
-			this.board.drawDistance(posFrom.x, posFrom.y, posTo.x, posTo.y);
+			this.board.drawDistance(
+				posFrom.x,
+				posFrom.y,
+				posTo.x,
+				posTo.y,
+				edge.curve
+			);
 	}
 
 	exportMatrix() {
