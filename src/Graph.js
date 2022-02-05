@@ -1,5 +1,6 @@
 import Board from "./Board";
-import Stack from "stack-structure";
+import Queue from "./Queue";
+import Stack from "./Stack";
 
 class Graph {
 	constructor({ directed, showDistance, showGrid, radius, character } = {}) {
@@ -14,6 +15,7 @@ class Graph {
 		this.showDistance = showDistance;
 		this.showGrid = showGrid;
 		this.character = character;
+		this.motionSteps = [];
 
 		this.init();
 	}
@@ -69,17 +71,30 @@ class Graph {
 				this.target = null;
 		});
 
+		this.render();
+	}
+
+	render() {
 		this.update();
+		this.draw();
+		setTimeout(() => {
+			this.render();
+		}, 1000 / 60);
 	}
 
 	update() {
-		this.draw();
 		this.checkAddEdge();
 		this.updateCurve();
 		this.updateNodes();
-		setTimeout(() => {
-			this.update();
-		}, 1000 / 60);
+		this.updateMotion();
+	}
+	draw() {
+		this.board.clear();
+		if (this.showGrid) this.board.drawGrid();
+		this.drawEdges();
+		this.drawLine();
+		this.drawNodes();
+		this.drawMotions();
 	}
 
 	updateCurve() {
@@ -87,6 +102,52 @@ class Graph {
 		if (this.target) return;
 		this.edges[this.selectedEdgeId].curve +=
 			this.board.clientPosition.x - this.board.prevPosition.x;
+	}
+
+	updateNodes() {
+		this.nodes = this.nodes.map((e) => {
+			if (!this.board.buttons || this.board.shift || !this.target)
+				return this.magicFunction(e);
+
+			if (this.target.label === e.label) {
+				this.target = this.toClientPosition(e);
+				return this.toClientPosition(e);
+			}
+
+			return this.magicFunction(e);
+		});
+	}
+
+	updateMotion() {
+		if (!this.motionSteps?.length) return;
+
+		let updated = false;
+		this.motionSteps = this.motionSteps.map((step) => {
+			if (step.step >= 1 || updated) return step;
+			updated = true;
+			return {
+				...step,
+				step: (step.step += 1e-2),
+			};
+		});
+	}
+
+	drawMotions() {
+		this.motionSteps.forEach((motion) => this.drawMotion(motion));
+	}
+
+	drawMotion(motion) {
+		motion = this.board.position.ratioLine(
+			this.nodes[motion.from - 1],
+			this.nodes[motion.to - 1],
+			motion.step
+		);
+		this.board.drawMotionLine(
+			motion.from.x,
+			motion.from.y,
+			motion.to.x,
+			motion.to.y
+		);
 	}
 
 	addNode(label, x, y) {
@@ -114,13 +175,6 @@ class Graph {
 		this.edges = this.edges.filter((e) => e.from !== from || e.to !== to);
 	}
 
-	draw() {
-		this.board.clear();
-		if (this.showGrid) this.board.drawGrid();
-		this.drawEdges();
-		this.drawLine();
-		this.drawNodes();
-	}
 	drawNodes() {
 		this.nodes.forEach((node) => {
 			this.board.drawNode(
@@ -129,19 +183,6 @@ class Graph {
 				this.character ? this.alphabet[node.label] : node.label,
 				this.target?.label === node.label
 			);
-		});
-	}
-	updateNodes() {
-		this.nodes = this.nodes.map((e) => {
-			if (!this.board.buttons || this.board.shift || !this.target)
-				return this.magicFunction(e);
-
-			if (this.target.label === e.label) {
-				this.target = this.toClientPosition(e);
-				return this.toClientPosition(e);
-			}
-
-			return this.magicFunction(e);
 		});
 	}
 
@@ -216,7 +257,6 @@ class Graph {
 			posTo.y,
 			edge.curve
 		);
-		// this.board.drawLine(posFrom.x, posFrom.y, posTo.x, posTo.y);
 
 		if (this.directed)
 			this.board.drawDirected(
@@ -269,26 +309,63 @@ class Graph {
 	}
 
 	deepFirstSearch(from) {
-		const stack = new Stack();
 		const marked = [];
-		stack.push(from);
+		const stack = new Stack();
+		let steps = [];
 
-		const steps = [];
-
+		stack.push({ to: from });
 		while (!stack.empty()) {
-			const u = stack.pop();
-			if (marked[u]) continue;
-			marked[u] = true;
-			const neigh = this.neighbours(u);
-			steps.push({
-				u,
-				stack: [...stack.__data__],
-				marked: [...marked],
-				neigh,
+			const top = stack.top();
+			stack.pop();
+
+			if (marked[top.to]) continue;
+
+			marked[top.to] = true;
+			steps.push(top);
+			const neighbours = this.neighbours(top.to);
+
+			neighbours.reverse().forEach((node) => {
+				stack.push({ from: top.to, to: node });
 			});
-			neigh.forEach((e) => stack.push(e));
 		}
 
+		steps = steps
+			.filter((step) => step.from)
+			.map((step) => ({
+				...step,
+				step: 0,
+			}));
+
+		this.motionStart(steps);
+		return steps;
+	}
+
+	BreadthFirstSearch(from) {
+		const marked = [];
+		const queue = new Queue();
+		let steps = [];
+
+		queue.enQueue({ to: from });
+
+		while (!queue.empty()) {
+			const front = queue.deQueue();
+			if (marked[front.to]) continue;
+
+			marked[front.to] = true;
+			steps.push(front);
+			const neighbours = this.neighbours(front.to);
+			neighbours.forEach((node) => {
+				queue.enQueue({ from: front.to, to: node });
+			});
+		}
+
+		steps = steps
+			.filter((node) => node.from)
+			.map((node) => ({
+				...node,
+				step: 0,
+			}));
+		this.motionStart(steps);
 		return steps;
 	}
 
@@ -322,6 +399,14 @@ class Graph {
 			from: this.character ? this.alphabet[edge.from] : edge.from,
 			to: this.character ? this.alphabet[edge.to] : edge.label,
 		}));
+	}
+
+	motionStart(motionSteps) {
+		this.motionSteps = motionSteps;
+	}
+
+	motionStop() {
+		this.motionSteps = [];
 	}
 }
 

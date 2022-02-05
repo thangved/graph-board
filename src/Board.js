@@ -59,6 +59,16 @@ class Board {
 		this.context.fillText(u, x, y + this.fontSize / 2);
 		this.context.strokeStyle = "#000";
 	}
+	drawMotionLine(x1, y1, x2, y2) {
+		this.context.lineWidth = 5;
+		this.context.strokeStyle = "orange";
+		this.context.beginPath();
+		this.context.moveTo(x1, y1);
+		this.context.lineTo(x2, y2);
+		this.context.stroke();
+		this.context.lineWidth = 1;
+		this.context.strokeStyle = "#000";
+	}
 	drawLine(x1, y1, x2, y2) {
 		this.context.lineWidth = 2;
 		this.context.beginPath();
@@ -100,11 +110,11 @@ class Board {
 		this.context.lineWidth = 1;
 	}
 
-	drawDistance(x1, y1, x2, y2, distance) {
+	drawDistance(x1, y1, x2, y2, distance, fill) {
 		const d = this.getDistance(new Position(x1, y1), new Position(x2, y2));
 		const curvePos = this.getCurvePos(x1, y1, x2, y2, distance);
 
-		this.context.fillStyle = "#000";
+		this.context.fillStyle = fill || "#000";
 		this.context.beginPath();
 		this.context.fillText(parseInt(d / 100), curvePos.x, curvePos.y);
 		this.context.textAlign = "center";
