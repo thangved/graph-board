@@ -413,13 +413,15 @@ class Graph {
 	nextStep() {
 		if (this.motionSteps.step === this.motionSteps.step - 1)
 			return this.motionSteps.step;
+		this.motionSteps.step++;
 		this.onchange();
-		return ++this.motionSteps.step;
+		return this.motionSteps.step;
 	}
 	prevStep() {
 		if (this.motionSteps.step === 0) return this.motionSteps.step;
+		this.motionSteps.step--;
 		this.onchange();
-		return --this.motionSteps.step;
+		return this.motionSteps.step;
 	}
 
 	// GETTER
