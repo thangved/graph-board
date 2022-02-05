@@ -15,7 +15,7 @@ class Graph {
 		this.showDistance = showDistance;
 		this.showGrid = showGrid;
 		this.character = character;
-		this.motionSteps = [];
+		this.motionSteps = { step: 0, steps: [] };
 
 		this.init();
 	}
@@ -119,10 +119,15 @@ class Graph {
 	}
 
 	updateMotion() {
-		if (!this.motionSteps?.length) return;
+		if (!this.motionSteps.steps?.length) return;
 
 		let updated = false;
-		this.motionSteps = this.motionSteps.map((step) => {
+		this.motionSteps.steps = this.motionSteps.steps.map((step, index) => {
+			if (index > this.motionSteps.step)
+				return {
+					...step,
+					step: 0,
+				};
 			if (step.step >= 1 || updated) return step;
 			updated = true;
 			return {
@@ -133,7 +138,7 @@ class Graph {
 	}
 
 	drawMotions() {
-		this.motionSteps.forEach((motion) => this.drawMotion(motion));
+		this.motionSteps.steps.forEach((motion) => this.drawMotion(motion));
 	}
 
 	drawMotion(motion) {
@@ -329,12 +334,15 @@ class Graph {
 			});
 		}
 
-		steps = steps
-			.filter((step) => step.from)
-			.map((step) => ({
-				...step,
-				step: 0,
-			}));
+		steps = {
+			step: 0,
+			steps: steps
+				.filter((step) => step.from)
+				.map((step) => ({
+					...step,
+					step: 0,
+				})),
+		};
 
 		this.motionStart(steps);
 		return steps;
@@ -359,12 +367,15 @@ class Graph {
 			});
 		}
 
-		steps = steps
-			.filter((node) => node.from)
-			.map((node) => ({
-				...node,
-				step: 0,
-			}));
+		steps = {
+			step: 0,
+			steps: steps
+				.filter((node) => node.from)
+				.map((node) => ({
+					...node,
+					step: 0,
+				})),
+		};
 		this.motionStart(steps);
 		return steps;
 	}
@@ -407,6 +418,16 @@ class Graph {
 
 	motionStop() {
 		this.motionSteps = [];
+	}
+
+	nextStep() {
+		if (this.motionSteps.step === this.motionSteps.step - 1)
+			return this.motionSteps.step;
+		return ++this.motionSteps.step;
+	}
+	prevStep() {
+		if (this.motionSteps.step === 0) return this.motionSteps.step;
+		return --this.motionSteps.step;
 	}
 }
 

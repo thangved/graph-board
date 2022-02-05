@@ -8,7 +8,12 @@ const g = new Graph({
 g.addNode(1);
 g.addNode(2);
 g.addNode(3);
+g.addNode(4);
 g.addEdge(1, 2);
+g.addEdge(1, 4);
+g.addEdge(2, 1);
+g.deepFirstSearch(1);
+
 g.appendTo("#canvas");
 
 const edgesComponent = document.getElementById("edges");
