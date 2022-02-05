@@ -340,7 +340,7 @@ class Graph {
 		return steps;
 	}
 
-	BreadthFirstSearch(from) {
+	breadthFirstSearch(from) {
 		const marked = [];
 		const queue = new Queue();
 		let steps = [];
