@@ -424,11 +424,13 @@ class Graph {
 
 	motionStart(motionSteps) {
 		this.motionSteps = motionSteps;
+		this.onchange();
 	}
 
 	motionStop() {
 		this.motionSteps.step = 0;
 		this.motionSteps.steps = [];
+		this.onchange();
 	}
 
 	nextStep() {
