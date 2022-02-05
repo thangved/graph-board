@@ -16,6 +16,7 @@ class Graph {
 		this.showGrid = showGrid;
 		this.character = character;
 		this.motionSteps = { step: 0, steps: [] };
+		this.onchange = Function;
 
 		this.init();
 	}
@@ -142,6 +143,7 @@ class Graph {
 	}
 
 	drawMotion(motion) {
+		if (!this.nodes[motion.from - 1] || !this.nodes[motion.to - 1]) return;
 		motion = this.board.position.ratioLine(
 			this.nodes[motion.from - 1],
 			this.nodes[motion.to - 1],
@@ -163,21 +165,25 @@ class Graph {
 			move: 10,
 		};
 		this.nodes.push(node);
+		this.onchange();
 	}
 
 	addEdge(from, to) {
 		const edge = { from, to, curve: Math.random() * 100 };
 		this.edges.push(edge);
 		this.target = null;
+		this.onchange();
 	}
 
 	removeNode(label) {
 		this.nodes = this.nodes.filter((e) => e.label !== label);
+		this.onchange();
 	}
 
 	removeEdge(edge) {
 		const { from, to } = edge;
 		this.edges = this.edges.filter((e) => e.from !== from || e.to !== to);
+		this.onchange();
 	}
 
 	drawNodes() {
@@ -386,16 +392,20 @@ class Graph {
 
 	setDirected(directed) {
 		this.directed = directed;
+		this.onchange();
 	}
 	setShowGrid(showGrid) {
 		this.showGrid = showGrid;
+		this.onchange();
 	}
 	setShowDistance(showDistance) {
 		this.showDistance = showDistance;
+		this.onchange();
 	}
 
 	setRadius(radius) {
 		this.board.radius = radius;
+		this.onchange();
 	}
 
 	getNodes() {
@@ -417,7 +427,8 @@ class Graph {
 	}
 
 	motionStop() {
-		this.motionSteps = [];
+		this.motionSteps.step = 0;
+		this.motionSteps.steps = [];
 	}
 
 	nextStep() {
