@@ -108,6 +108,7 @@ class Graph {
 	updateCurve() {
 		if (this.board.buttons !== 1 || this.selectedEdgeId === null) return;
 		if (this.target) return;
+		this.onchange();
 		this.edges[this.selectedEdgeId].curve +=
 			this.board.clientPosition.x - this.board.prevPosition.x;
 	}
@@ -119,6 +120,7 @@ class Graph {
 
 			if (this.target.label === e.label) {
 				this.target = this.toClientPosition(e);
+				this.onchange();
 				return this.toClientPosition(e);
 			}
 
