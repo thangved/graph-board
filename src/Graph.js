@@ -3,12 +3,18 @@ import Queue from "./Queue";
 import Stack from "./Stack";
 
 class Graph {
-	constructor({ directed, showDistance, showGrid, radius, character } = {}) {
+	constructor({
+		directed,
+		showDistance,
+		showGrid,
+		radius,
+		character,
+		motion,
+	} = {}) {
 		this.alphabet = "_ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		this.board = new Board({ radius });
 		this.nodes = [];
 		this.edges = [];
-		this.functions = [];
 		this.target = null;
 		this.selectedEdgeId = null;
 		this.directed = directed;
@@ -17,6 +23,7 @@ class Graph {
 		this.character = character;
 		this.motionSteps = { step: 0, steps: [] };
 		this.onchange = Function;
+		this.motion = motion;
 
 		this.init();
 	}
@@ -108,14 +115,14 @@ class Graph {
 	updateNodes() {
 		this.nodes = this.nodes.map((e) => {
 			if (!this.board.buttons || this.board.shift || !this.target)
-				return this.magicFunction(e);
+				return this.motion ? this.magicFunction(e) : e;
 
 			if (this.target.label === e.label) {
 				this.target = this.toClientPosition(e);
 				return this.toClientPosition(e);
 			}
 
-			return this.magicFunction(e);
+			return this.motion ? this.magicFunction(e) : e;
 		});
 	}
 
@@ -390,6 +397,45 @@ class Graph {
 		this.board.appendTo(selector);
 	}
 
+	motionStart(motionSteps) {
+		this.motionSteps = motionSteps;
+		this.onchange();
+	}
+
+	motionStop() {
+		this.motionSteps.step = 0;
+		this.motionSteps.steps = [];
+		this.onchange();
+	}
+
+	nextStep() {
+		if (this.motionSteps.step === this.motionSteps.step - 1)
+			return this.motionSteps.step;
+		this.onchange();
+		return ++this.motionSteps.step;
+	}
+	prevStep() {
+		if (this.motionSteps.step === 0) return this.motionSteps.step;
+		this.onchange();
+		return --this.motionSteps.step;
+	}
+
+	// GETTER
+	getNodes() {
+		return this.nodes.map((node) => ({
+			...this.edges,
+			label: this.character ? this.alphabet[node.label] : node.label,
+		}));
+	}
+	getEdges() {
+		return this.edges.map((edge) => ({
+			...edge,
+			from: this.character ? this.alphabet[edge.from] : edge.from,
+			to: this.character ? this.alphabet[edge.to] : edge.label,
+		}));
+	}
+
+	// SETTER
 	setDirected(directed) {
 		this.directed = directed;
 		this.onchange();
@@ -407,40 +453,13 @@ class Graph {
 		this.board.radius = radius;
 		this.onchange();
 	}
-
-	getNodes() {
-		return this.nodes.map((node) => ({
-			...this.edges,
-			label: this.character ? this.alphabet[node.label] : node.label,
-		}));
-	}
-	getEdges() {
-		return this.edges.map((edge) => ({
-			...edge,
-			from: this.character ? this.alphabet[edge.from] : edge.from,
-			to: this.character ? this.alphabet[edge.to] : edge.label,
-		}));
-	}
-
-	motionStart(motionSteps) {
-		this.motionSteps = motionSteps;
+	setMotion(motion) {
+		this.motion = motion;
 		this.onchange();
 	}
-
-	motionStop() {
-		this.motionSteps.step = 0;
-		this.motionSteps.steps = [];
+	setCharacter(character) {
+		this.character = character;
 		this.onchange();
-	}
-
-	nextStep() {
-		if (this.motionSteps.step === this.motionSteps.step - 1)
-			return this.motionSteps.step;
-		return ++this.motionSteps.step;
-	}
-	prevStep() {
-		if (this.motionSteps.step === 0) return this.motionSteps.step;
-		return --this.motionSteps.step;
 	}
 }
 

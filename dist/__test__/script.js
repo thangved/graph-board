@@ -3,8 +3,10 @@ const g = new Graph({
 	showDistance: true,
 	showGrid: true,
 	character: true,
+	motion: true,
 });
 
+g.onchange = () => console.log("changed");
 g.addNode(1);
 g.addNode(2);
 g.addNode(3);
@@ -12,6 +14,8 @@ g.addNode(4);
 g.addEdge(1, 2);
 g.addEdge(1, 4);
 g.addEdge(2, 1);
+
+console.log("search");
 g.deepFirstSearch(1);
 
 g.appendTo("#canvas");
