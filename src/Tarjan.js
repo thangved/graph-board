@@ -1,6 +1,10 @@
 import Stack from "./Stack";
+import Graph from "./Graph";
 
 export default class Tarjan {
+	/**
+	 * @param {Graph} graph
+	 */
 	constructor(graph) {
 		this.stack = new Stack();
 		this.step = 0;
@@ -10,8 +14,15 @@ export default class Tarjan {
 		this.graph = graph;
 	}
 
-	tarjan(from) {
+	tarjan() {
+		this.graph.nodes.forEach((node) => {
+			this.__tarjan(node.label);
+		});
+		return this.linkedParts;
+	}
+	__tarjan(from) {
 		const { num, minNum, stack, linkedParts } = this;
+		if (num[from]) return;
 		num[from] = this.step;
 		minNum[from] = this.step;
 		this.step++;

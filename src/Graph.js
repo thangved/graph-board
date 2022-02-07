@@ -191,12 +191,14 @@ class Graph {
 	removeNode(label) {
 		this.nodes = this.nodes.filter((e) => e.label !== label);
 		this.onchange();
+		this.linkedParts = [];
 	}
 
 	removeEdge(edge) {
 		const { from, to } = edge;
 		this.edges = this.edges.filter((e) => e.from !== from || e.to !== to);
 		this.onchange();
+		this.linkedParts = [];
 	}
 
 	drawNodes() {
@@ -428,7 +430,7 @@ class Graph {
 
 	tarjan() {
 		const tarjan = new Tarjan(this);
-		return tarjan.tarjan(1);
+		return tarjan.tarjan();
 	}
 
 	appendTo(selector) {
