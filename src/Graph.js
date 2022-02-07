@@ -1,6 +1,7 @@
 import Board from "./Board";
 import Queue from "./Queue";
 import Stack from "./Stack";
+import Tarjan from "./Tarjan";
 
 class Graph {
 	constructor({
@@ -24,6 +25,7 @@ class Graph {
 		this.motionSteps = { step: 0, steps: [] };
 		this.onchange = Function;
 		this.motion = motion;
+		this.linkedParts = [];
 
 		this.init();
 	}
@@ -103,6 +105,7 @@ class Graph {
 		this.drawLine();
 		this.drawNodes();
 		this.drawMotions();
+		this.drawLinked();
 	}
 
 	updateCurve() {
@@ -151,7 +154,7 @@ class Graph {
 		this.motionSteps.steps.forEach((motion) => this.drawMotion(motion));
 	}
 
-	drawMotion(motion) {
+	drawMotion(motion, color) {
 		if (!this.nodes[motion.from - 1] || !this.nodes[motion.to - 1]) return;
 		motion = this.board.position.ratioLine(
 			this.nodes[motion.from - 1],
@@ -162,7 +165,8 @@ class Graph {
 			motion.from.x,
 			motion.from.y,
 			motion.to.x,
-			motion.to.y
+			motion.to.y,
+			color
 		);
 	}
 
@@ -344,7 +348,7 @@ class Graph {
 			steps.push(top);
 			const neighbours = this.neighbours(top.to);
 
-			neighbours.reverse().forEach((node) => {
+			neighbours.forEach((node) => {
 				stack.push({ from: top.to, to: node });
 			});
 		}
@@ -393,6 +397,38 @@ class Graph {
 		};
 		this.motionStart(steps);
 		return steps;
+	}
+
+	drawLinked() {
+		if (!this.linkedParts.length) return;
+
+		this.linkedParts.forEach((linked) => {
+			for (let i = 0; i < linked.length; i++)
+				for (let j = 0; j < linked.length; j++) {
+					if (i === j) continue;
+					if (!this.neighbours(linked[i]).includes(linked[j]))
+						continue;
+					this.drawMotion(
+						{ from: linked[i], to: linked[j], step: 1 },
+						"red"
+					);
+				}
+		});
+	}
+
+	tarjanStop() {
+		this.linkedParts = [];
+		this.onchange();
+	}
+
+	tarjanStart() {
+		this.linkedParts = this.tarjan();
+		this.onchange();
+	}
+
+	tarjan() {
+		const tarjan = new Tarjan(this);
+		return tarjan.tarjan(1);
 	}
 
 	appendTo(selector) {

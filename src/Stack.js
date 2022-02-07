@@ -13,10 +13,13 @@ export default class Stack {
 	}
 	// pop top element of stack
 	pop() {
-		this.__data__.pop();
+		return this.__data__.pop();
 	}
 	// push element to top stack
 	push(x) {
 		this.__data__.push(x);
+	}
+	includes(x) {
+		return this.__data__.includes(x);
 	}
 }

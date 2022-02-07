@@ -59,9 +59,9 @@ class Board {
 		this.context.fillText(u, x, y + this.fontSize / 2);
 		this.context.strokeStyle = "#000";
 	}
-	drawMotionLine(x1, y1, x2, y2) {
+	drawMotionLine(x1, y1, x2, y2, color) {
 		this.context.lineWidth = 5;
-		this.context.strokeStyle = "orange";
+		this.context.strokeStyle = color || "orange";
 		this.context.beginPath();
 		this.context.moveTo(x1, y1);
 		this.context.lineTo(x2, y2);

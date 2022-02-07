@@ -15,9 +15,6 @@ g.addEdge(1, 2);
 g.addEdge(1, 4);
 g.addEdge(2, 1);
 
-console.log("search");
-g.deepFirstSearch(1);
-
 g.appendTo("#canvas");
 
 const edgesComponent = document.getElementById("edges");
