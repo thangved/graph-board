@@ -7,7 +7,7 @@ export default class Tarjan {
 	 */
 	constructor(graph) {
 		this.stack = new Stack();
-		this.step = 0;
+		this.step = 1;
 		this.num = [];
 		this.minNum = [];
 		this.linkedParts = [];
@@ -16,35 +16,43 @@ export default class Tarjan {
 
 	tarjan() {
 		this.graph.nodes.forEach((node) => {
+			if (this.num[node.label]) return;
 			this.__tarjan(node.label);
 		});
 		return this.linkedParts;
 	}
 	__tarjan(from) {
-		const { num, minNum, stack, linkedParts } = this;
-		if (num[from]) return;
-		num[from] = this.step;
-		minNum[from] = this.step;
+		if (this.num[from]) return this.linkedParts;
+
+		this.num[from] = this.step;
+		this.minNum[from] = this.step;
 		this.step++;
-		stack.push(from);
+		this.stack.push(from);
 
 		const neighbours = this.graph.neighbours(from);
 
 		neighbours.forEach((neighbour) => {
-			if (stack.includes(neighbour))
-				return (minNum[from] = Math.min(num[neighbour], minNum[from]));
-			if (!num[neighbour]) {
-				this.tarjan(neighbour);
-				minNum[from] = Math.min(minNum[neighbour], minNum[from]);
-			}
+			if (this.stack.includes(neighbour))
+				return (this.minNum[from] = Math.min(
+					this.num[neighbour],
+					this.minNum[from]
+				));
+
+			this.__tarjan(neighbour);
+			this.minNum[from] = Math.min(
+				this.minNum[neighbour],
+				this.minNum[from]
+			);
 		});
 
-		if (num[from] !== minNum[from]) return;
-		const linked = [];
-		while (stack.top() !== from) linked.push(stack.pop());
-		linked.push(stack.pop());
+		if (this.num[from] !== this.minNum[from]) return this.linkedParts;
 
-		linkedParts.push(linked);
+		const linked = [];
+		while (this.stack.top() !== from) linked.push(this.stack.pop());
+
+		linked.push(this.stack.pop());
+
+		this.linkedParts.push(linked);
 
 		return this.linkedParts;
 	}

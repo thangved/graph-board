@@ -10,6 +10,7 @@ class Board {
 		this.prevPosition = { x: 0, y: 0 };
 		this.buttons = 0;
 		this.shift = false;
+		this.alt = false;
 		this.selector = "";
 		this.position = new Position(0, 0);
 
@@ -28,6 +29,7 @@ class Board {
 			};
 			this.buttons = event.buttons;
 			this.shift = event.shiftKey;
+			this.alt = event.altKey;
 		};
 		window.onresize = () => {
 			if (this.selector) this.appendTo(this.selector);

@@ -20,6 +20,6 @@ export default class Stack {
 		this.__data__.push(x);
 	}
 	includes(x) {
-		return this.__data__.includes(x);
+		return this.__data__.indexOf(x) !== -1;
 	}
 }

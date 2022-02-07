@@ -56,7 +56,7 @@ class Graph {
 					from.y,
 					to.x,
 					to.y,
-					edge.curve
+					edge.curve / 2
 				);
 				const distance = this.board.getDistance(curvePos, { x, y });
 
@@ -80,6 +80,14 @@ class Graph {
 			)
 				this.target = null;
 		});
+
+		this.board.canvas.onclick = () => {
+			if (!this.board.alt) return;
+			this.removeEdge(this.edges[this.selectedEdgeId] || {});
+			this.nodes = this.nodes.filter(
+				(node) => node !== this.target?.label
+			);
+		};
 
 		this.render();
 	}
@@ -405,6 +413,7 @@ class Graph {
 		if (!this.linkedParts.length) return;
 
 		this.linkedParts.forEach((linked) => {
+			if (linked.length === 1) return;
 			for (let i = 0; i < linked.length; i++)
 				for (let j = 0; j < linked.length; j++) {
 					if (i === j) continue;
