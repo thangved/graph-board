@@ -201,6 +201,8 @@ class Graph {
 		this.edges.forEach((edge) => {
 			if (edge.from === newEdge.from && edge.to === newEdge.to)
 				newEdge.curve = 50 + 50 * Math.random();
+			if (edge.from === newEdge.to && edge.to === newEdge.from)
+				newEdge.curve = 50 + 50 * Math.random();
 		});
 		this.edges.push(newEdge);
 		this.target = null;
