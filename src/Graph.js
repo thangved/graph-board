@@ -2,7 +2,6 @@ import Board from "./Board";
 import Queue from "./Queue";
 import Stack from "./Stack";
 import Tarjan from "./Tarjan";
-import Position from "./Position";
 
 class Graph {
 	constructor({
@@ -67,7 +66,7 @@ class Graph {
 
 			this.nodes.forEach((e) => {
 				if (this.equalPoint(x, e.x) && this.equalPoint(y, e.y))
-					this.target = this.target || e;
+					this.target = this.target || e.label;
 			});
 
 			if (!this.target) return;
@@ -82,11 +81,11 @@ class Graph {
 				this.target = null;
 		});
 
-		this.board.canvas.onclick = () => {
-			if (!this.board.alt) return;
+		this.board.canvas.onclick = (event) => {
+			if (!event.altKey) return;
 			this.removeEdge(this.edges[this.selectedEdgeId] || {});
 			if (!this.target) return;
-			this.removeNode(this.target.label);
+			this.removeNode(this.nodes.length);
 		};
 
 		this.render();
@@ -120,8 +119,15 @@ class Graph {
 		if (this.board.buttons !== 1 || this.selectedEdgeId === null) return;
 		if (this.target) return;
 		this.onchange();
-		this.edges[this.selectedEdgeId].curve +=
-			this.board.clientPosition.x - this.board.prevPosition.x;
+		this.edges[this.selectedEdgeId].curve =
+			this.board.position.getReverseCurvePos(
+				this.nodes[this.edges[this.selectedEdgeId].from - 1].x,
+				this.nodes[this.edges[this.selectedEdgeId].from - 1].y,
+				this.nodes[this.edges[this.selectedEdgeId].to - 1].x,
+				this.nodes[this.edges[this.selectedEdgeId].to - 1].y,
+				this.board.clientPosition.x,
+				this.board.clientPosition.y
+			);
 	}
 
 	updateNodes() {
@@ -132,8 +138,7 @@ class Graph {
 		if (!this.board.buttons || this.board.shift || !this.target)
 			return this.motion ? this.magicFunction(node) : node;
 
-		if (this.target.label === node.label) {
-			this.target = this.toClientPosition(node);
+		if (this.target === node.label) {
 			this.onchange();
 			return this.toClientPosition(node);
 		}
@@ -192,8 +197,12 @@ class Graph {
 	}
 
 	addEdge(from, to) {
-		const edge = { from, to, curve: Math.random() * 100 };
-		this.edges.push(edge);
+		const newEdge = { from, to, curve: 0 };
+		this.edges.forEach((edge) => {
+			if (edge.from === newEdge.from && edge.to === newEdge.to)
+				newEdge.curve = 50 + 50 * Math.random();
+		});
+		this.edges.push(newEdge);
 		this.target = null;
 		this.onchange();
 	}
@@ -217,7 +226,7 @@ class Graph {
 				node.x,
 				node.y,
 				this.character ? this.alphabet[node.label] : node.label,
-				this.target?.label === node.label
+				this.target === node.label
 			);
 		});
 	}
@@ -259,7 +268,12 @@ class Graph {
 			return;
 
 		const { x, y } = this.board.clientPosition;
-		this.board.drawLine(this.target.x, this.target.y, x, y);
+		this.board.drawLine(
+			this.nodes[this.target - 1].x,
+			this.nodes[this.target - 1].y,
+			x,
+			y
+		);
 	}
 	checkAddEdge() {
 		if (!this.target) return;
@@ -268,9 +282,9 @@ class Graph {
 		const { x, y } = this.board.clientPosition;
 		this.nodes.forEach((e) => {
 			if (!this.target) return;
-			if (e.label === this.target.label) return;
+			if (e.label === this.target) return;
 			if (this.equalPoint(x, e.x) && this.equalPoint(y, e.y)) {
-				this.addEdge(this.target.label, e.label);
+				this.addEdge(this.target, e.label);
 				this.target = null;
 			}
 		});
