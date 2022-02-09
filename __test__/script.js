@@ -1,7 +1,4 @@
 const g = new Graph({
-	directed: true,
-	showDistance: true,
-	showGrid: true,
 	character: true,
 	motion: true,
 });
@@ -18,7 +15,6 @@ g.addEdge(3, 1);
 g.addEdge(3, 4);
 g.addEdge(5, 4);
 g.addEdge(5, 3);
-g.tarjanStart();
 
 g.appendTo("#canvas");
 

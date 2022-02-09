@@ -2,6 +2,7 @@ import Board from "./Board";
 import Queue from "./Queue";
 import Stack from "./Stack";
 import Tarjan from "./Tarjan";
+import Position from "./Position";
 
 class Graph {
 	constructor({
@@ -84,9 +85,8 @@ class Graph {
 		this.board.canvas.onclick = () => {
 			if (!this.board.alt) return;
 			this.removeEdge(this.edges[this.selectedEdgeId] || {});
-			this.nodes = this.nodes.filter(
-				(node) => node !== this.target?.label
-			);
+			if (!this.target) return;
+			this.removeNode(this.target.label);
 		};
 
 		this.render();
@@ -125,18 +125,20 @@ class Graph {
 	}
 
 	updateNodes() {
-		this.nodes = this.nodes.map((e) => {
-			if (!this.board.buttons || this.board.shift || !this.target)
-				return this.motion ? this.magicFunction(e) : e;
+		this.nodes = this.nodes.map((node) => this.updateNode(node));
+	}
 
-			if (this.target.label === e.label) {
-				this.target = this.toClientPosition(e);
-				this.onchange();
-				return this.toClientPosition(e);
-			}
+	updateNode(node) {
+		if (!this.board.buttons || this.board.shift || !this.target)
+			return this.motion ? this.magicFunction(node) : node;
 
-			return this.motion ? this.magicFunction(e) : e;
-		});
+		if (this.target.label === node.label) {
+			this.target = this.toClientPosition(node);
+			this.onchange();
+			return this.toClientPosition(node);
+		}
+
+		return this.motion ? this.magicFunction(node) : node;
 	}
 
 	updateMotion() {
