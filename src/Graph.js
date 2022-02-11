@@ -116,7 +116,6 @@ class Graph {
 	updateCurve() {
 		if (this.board.buttons !== 1 || this.selectedEdgeId === null) return;
 		if (this.target) return;
-		this.onchange();
 		this.edges[this.selectedEdgeId].curve =
 			this.board.position.getReverseCurvePos(
 				this.nodes[this.edges[this.selectedEdgeId].from - 1].x,
@@ -125,7 +124,8 @@ class Graph {
 				this.nodes[this.edges[this.selectedEdgeId].to - 1].y,
 				this.board.clientPosition.x,
 				this.board.clientPosition.y
-			);
+			) / 2;
+		this.onchange();
 	}
 
 	updateNodes() {
