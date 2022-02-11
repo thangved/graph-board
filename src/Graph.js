@@ -48,7 +48,6 @@ class Graph {
 				if (this.board.buttons === 1) return;
 				const from = this.nodes[edge.from - 1];
 				const to = this.nodes[edge.to - 1];
-
 				if (!from || !to) return;
 
 				const curvePos = this.board.getCurvePos(
@@ -59,8 +58,7 @@ class Graph {
 					edge.curve / 2
 				);
 				const distance = this.board.getDistance(curvePos, { x, y });
-
-				if (distance < this.board.radius) this.selectedEdgeId = index;
+				if (distance <= this.board.radius) this.selectedEdgeId = index;
 				if (this.target) this.selectedEdgeId = null;
 			});
 
@@ -272,7 +270,7 @@ class Graph {
 	drawLine() {
 		if (!this.board.shift || this.board.buttons !== 1 || !this.target)
 			return;
-
+		this.selectedEdgeId = null;
 		const { x, y } = this.board.clientPosition;
 		this.board.drawLine(
 			this.nodes[this.target - 1].x,

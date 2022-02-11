@@ -116,8 +116,25 @@ class Board {
 		const d = this.getDistance(new Position(x1, y1), new Position(x2, y2));
 		const curvePos = this.getCurvePos(x1, y1, x2, y2, distance);
 
+		const middlePos = this.getCurvePos(x1, y1, x2, y2, distance / 2);
+
+		const toPos = this.position.ratioLine(
+			{
+				x: middlePos.x,
+				y: middlePos.y,
+			},
+			{
+				x: curvePos.x,
+				y: curvePos.y,
+			},
+			0.8
+		);
+
 		this.context.fillStyle = fill || "#000";
 		this.context.beginPath();
+		this.context.moveTo(middlePos.x, middlePos.y);
+		this.context.lineTo(toPos.to.x, toPos.to.y);
+		this.context.stroke();
 		this.context.fillText(parseInt(d / 100), curvePos.x, curvePos.y);
 		this.context.textAlign = "center";
 		this.context.fillStyle = "#fff";
@@ -151,6 +168,13 @@ class Board {
 
 		this.context.quadraticCurveTo(curvePos.x, curvePos.y, x2, y2);
 		this.context.stroke();
+
+		this.context.beginPath();
+		const canterPos = this.getCurvePos(x1, y1, x2, y2, distance / 2);
+		this.context.fillStyle = "#000";
+		this.context.arc(canterPos.x, canterPos.y, 5, 0, 2 * Math.PI);
+		this.context.fill();
+		this.context.fillStyle = "#fff";
 	}
 
 	getMiddle(x1, y1, x2, y2) {
