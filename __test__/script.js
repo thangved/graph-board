@@ -1,20 +1,16 @@
 const g = new Graph({
 	character: true,
 	motion: true,
+	directed: true,
 });
 
 g.onchange = () => console.log("changed");
 g.addNode(1);
 g.addNode(2);
-g.addNode(3);
-g.addNode(4);
-g.addNode(5);
 g.addEdge(1, 2);
-g.addEdge(2, 3);
-g.addEdge(3, 1);
-g.addEdge(3, 4);
-g.addEdge(5, 4);
-g.addEdge(5, 3);
+g.addEdge(2, 1);
+
+g.tarjanStart();
 
 g.appendTo("#canvas");
 
