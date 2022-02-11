@@ -6,15 +6,20 @@ export default class Tarjan {
 	 * @param {Graph} graph
 	 */
 	constructor(graph) {
+		this.initial();
+		this.graph = graph;
+	}
+
+	initial() {
 		this.stack = new Stack();
 		this.step = 1;
 		this.num = [];
 		this.minNum = [];
 		this.linkedParts = [];
-		this.graph = graph;
 	}
 
 	tarjan() {
+		this.initial();
 		this.graph.nodes.forEach((node) => {
 			if (this.num[node.label]) return;
 			this.__tarjan(node.label);
@@ -22,8 +27,6 @@ export default class Tarjan {
 		return this.linkedParts;
 	}
 	__tarjan(from) {
-		if (this.num[from]) return this.linkedParts;
-
 		this.num[from] = this.step;
 		this.minNum[from] = this.step;
 		this.step++;

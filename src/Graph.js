@@ -194,6 +194,7 @@ class Graph {
 		};
 		this.nodes.push(node);
 		this.onchange();
+		this.stops();
 	}
 
 	addEdge(from, to) {
@@ -207,11 +208,13 @@ class Graph {
 		this.edges.push(newEdge);
 		this.target = null;
 		this.onchange();
+		this.stops();
 	}
 
 	removeNode(label) {
 		this.nodes = this.nodes.filter((e) => e.label !== label);
 		this.onchange();
+		this.stops();
 		this.linkedParts = [];
 	}
 
@@ -219,6 +222,7 @@ class Graph {
 		const { from, to } = edge;
 		this.edges = this.edges.filter((e) => e.from !== from || e.to !== to);
 		this.onchange();
+		this.stops();
 		this.linkedParts = [];
 	}
 
@@ -473,6 +477,11 @@ class Graph {
 		this.motionSteps.step = 0;
 		this.motionSteps.steps = [];
 		this.onchange();
+	}
+
+	stops() {
+		this.tarjanStop();
+		this.motionStop();
 	}
 
 	nextStep() {
