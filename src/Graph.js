@@ -106,10 +106,10 @@ class Graph {
 	draw() {
 		this.board.clear();
 		if (this.showGrid) this.board.drawGrid();
-		this.drawMotions();
-		this.drawLinked();
 		this.drawEdges();
 		this.drawLine();
+		this.drawMotions();
+		this.drawLinked();
 		this.drawNodes();
 	}
 

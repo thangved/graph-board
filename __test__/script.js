@@ -21,7 +21,11 @@ g.addEdge(5, 6);
 g.addEdge(6, 4);
 g.addEdge(4, 1);
 
-console.log(g.tarjanStart());
+g.deepFirstSearch(1);
+g.nextStep();
+g.nextStep();
+g.nextStep();
+g.nextStep();
 
 g.appendTo("#canvas");
 

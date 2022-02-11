@@ -72,12 +72,10 @@ class Board {
 		this.context.strokeStyle = "#000";
 	}
 	drawLine(x1, y1, x2, y2) {
-		this.context.lineWidth = 2;
 		this.context.beginPath();
 		this.context.moveTo(x1, y1);
 		this.context.lineTo(x2, y2);
 		this.context.stroke();
-		this.context.lineWidth = 1;
 	}
 	drawDirected(x1, y1, x2, y2, distance) {
 		const curvePos = this.getCurvePos(x1, y1, x2, y2, distance);
@@ -171,10 +169,11 @@ class Board {
 
 		this.context.beginPath();
 		const canterPos = this.getCurvePos(x1, y1, x2, y2, distance / 2);
-		this.context.fillStyle = "#000";
+		this.context.fillStyle = "#fff";
 		this.context.arc(canterPos.x, canterPos.y, 5, 0, 2 * Math.PI);
 		this.context.fill();
-		this.context.fillStyle = "#fff";
+		this.context.stroke();
+		this.context.fillStyle = "#000";
 	}
 
 	getMiddle(x1, y1, x2, y2) {
