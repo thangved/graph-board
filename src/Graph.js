@@ -457,6 +457,7 @@ class Graph {
 	tarjanStart() {
 		this.linkedParts = this.tarjan();
 		this.onchange();
+		return this.tarjan();
 	}
 
 	tarjan() {

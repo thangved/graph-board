@@ -21,7 +21,7 @@ g.addEdge(5, 6);
 g.addEdge(6, 4);
 g.addEdge(4, 1);
 
-g.tarjanStart();
+console.log(g.tarjanStart());
 
 g.appendTo("#canvas");
 

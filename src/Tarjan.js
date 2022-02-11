@@ -40,6 +40,7 @@ export default class Tarjan {
 					this.num[neighbour],
 					this.minNum[from]
 				));
+			if (this.num[neighbour]) return;
 
 			this.__tarjan(neighbour);
 			this.minNum[from] = Math.min(
