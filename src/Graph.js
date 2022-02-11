@@ -272,11 +272,12 @@ class Graph {
 			return;
 		this.selectedEdgeId = null;
 		const { x, y } = this.board.clientPosition;
-		this.board.drawLine(
+		this.board.drawCurve(
 			this.nodes[this.target - 1].x,
 			this.nodes[this.target - 1].y,
 			x,
-			y
+			y,
+			0
 		);
 	}
 	checkAddEdge() {

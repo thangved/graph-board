@@ -98,13 +98,13 @@ class Board {
 			y: M.y + (this.radius / 2) * Math.sin(angle + Math.PI / 2),
 		};
 
-		this.context.lineWidth = 5;
 		this.context.beginPath();
+		this.context.fillStyle = "#fff";
+		this.context.lineWidth = 2;
 		this.context.moveTo(A.x, A.y);
 		this.context.lineTo(B.x, B.y);
 		this.context.lineTo(C.x, C.y);
 		this.context.lineTo(A.x, A.y);
-		this.context.fillStyle = "#000";
 		this.context.stroke();
 		this.context.fill();
 		this.context.lineWidth = 1;
